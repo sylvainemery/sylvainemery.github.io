@@ -317,7 +317,8 @@ tbody tr:nth-child(odd) th {
   background-color: #202020;
   display: block;
 }
-.post-title-content {
+.post-title-content,
+.page-title-content {
   margin-left: 5rem;
 }
 .page-title,

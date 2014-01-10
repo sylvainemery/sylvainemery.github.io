@@ -6,4 +6,4 @@ Home of my dev experiments
 
 - [Jekyll](http://jekyllrb.com/)
 - [Poole](https://github.com/poole/poole)
-- [Hyde](hyde.getpoole.com)
+- [Hyde](http://hyde.getpoole.com)

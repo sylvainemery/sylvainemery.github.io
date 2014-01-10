@@ -307,10 +307,18 @@ tbody tr:nth-child(odd) th {
 
 /* Blog post or page title */
 .page-title,
+.post-title {
+  margin-left: -5rem;
+}
+.page-title,
 .post-title,
-.post-title a {
+.post-title-content {
   color: #fff;
   background-color: #202020;
+  display: block;
+}
+.post-title-content {
+  margin-left: 5rem;
 }
 .page-title,
 .post-title {

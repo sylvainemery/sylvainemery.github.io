@@ -3,4 +3,4 @@ layout: page
 title: About
 ---
 
-Itsa me, Sylvain !
+[{{ site.author.name }}]({{ site.author.url}})

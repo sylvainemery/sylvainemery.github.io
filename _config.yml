@@ -5,6 +5,8 @@ pygments:         true
 # Permalinks
 permalink:        pretty
 
+exclude:          ['*.sublime-*', 'LICENSE.md', 'README.md']
+
 # Setup
 title:            Hack N Cheese
 tagline:          'Cheezy hacks'

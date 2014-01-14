@@ -3,6 +3,8 @@ layout: page
 title: About
 ---
 
-Hi, I am Sylvain Emery.
+<span class="vcard">
+Hi, I am <span class="fn n"><span class="given-name">Sylvain</span> <span class="family-name">Emery</span></span>.
 
-Find me on <a href="https://plus.google.com/+SylvainEmery" target="_blank">Google+</a> or on <a href="https://github.com/sylvainemery/" target="_blank">GitHub</a>.
+Find me on <a class="url" href="https://plus.google.com/+SylvainEmery" target="_blank">Google+</a> or on <a href="https://github.com/sylvainemery/" target="_blank">GitHub</a>.
+</span>

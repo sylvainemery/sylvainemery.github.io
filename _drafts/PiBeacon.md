@@ -3,16 +3,23 @@ layout: post
 title: PiBeacon: Making an iBeacon from a Raspberry Pi
 ---
 
-Hardware
---------
+When I first heard about iBeacons, I thought it would be a great idea to make one. It seemed doable for an ex-developer-would-like-to-code-again-but-doesn-t-have-a-lot-of-spare-time like me.
+
+So I grabbed my Rapsberry Pi, found a lot of articles describing how to build an iBeacon out of it, but none would tell exactly what I wanted: a simple service launched at boot, easy enough to configure, with no complicated C code.
+
+This is how I did it.
+
+
+## Shopping list
+
 
 - a [Raspberry Pi](http://www.raspberrypi.org/). I had the B model in hand, but the A model should work just the same.
 - an SD Card for the system. Any will do as long as it's at least 4GB.
 - a Bluetooth 4.0 dongle. I chose the [Inatek BTA-CSR4B5](http://www.inateck.com/inateck-bta-csr4b5-usb-bluetooth-4-0-adapter/) because it's tiny, affordable and its chipset (CSR8510) is known to [work well with Linux](http://swiesmann.de/?p=36). You can find a list of tested Bluetooth adapters at [eLinux.org](http://elinux.org/RPi_USB_Bluetooth_adapters).
 
 
-Installation
-------------
+## Installation
+
 
 ### Install raspbian
 
@@ -41,13 +48,12 @@ Go to the [Bluez site](http://www.bluez.org/) to know what the latest version is
 ### up/down script : reverse engineered from small c program
 
 
-Making it a service
--------------------
+## Making it a service
+
 
 - service
 
 
-Reference
----------
+## Reference
 
 - [iBeacons - Dave Addey](http://daveaddey.com/?p=1252)

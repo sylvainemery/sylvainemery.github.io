@@ -5,9 +5,15 @@ title: PiBeacon: Making an iBeacon from a Raspberry Pi
 
 When I first heard about iBeacons, I thought it would be a great idea to make one. It seemed doable for an ex-developer-would-like-to-code-again-but-doesn-t-have-a-lot-of-spare-time like me.
 
-So I grabbed my Rapsberry Pi, found a lot of articles describing how to build an iBeacon out of it, but none would tell exactly what I wanted: a simple service launched at boot, easy enough to configure, with no complicated C code.
+So I grabbed my Rapsberry Pi, found a couple of articles describing how to build an iBeacon out of it, but none would tell exactly what I wanted: a simple service launched at boot, easy enough to configure, with no complicated C code.
 
-This is how I did it.
+The [first article](http://developer.radiusnetworks.com/2013/10/09/how-to-make-an-ibeacon-out-of-a-raspberry-pi.html) I read is from Radius Networks. They seem to have developped a comprehensive platform enabling marketers to do a lot of location-based things in their apps. The post is almost exactly what I was looking for, except that for some reason their Bluetooth commands didn't work with my adapter.
+
+In the [second article](http://www.ioncannon.net/programming/1603/turn-a-raspberry-pi-into-an-ibeacon/) from Carson McDonald, the iBeacon part is a C program. It worked instantly with my adapter, but I didn't want to dive into C code to maintain it, should I need/want to. So I kind of reverse-engineered the C program with a bluetooth debugger, to see exactly what commands were transmitted to the adapter.
+
+Combining thes two articles, I've been able to determine the commands compatible with my adapter and put together a fully autonomous PiBeacon.
+
+This is what worked for me.
 
 
 ## Shopping list
@@ -46,6 +52,11 @@ Go to the [Bluez site](http://www.bluez.org/) to know what the latest version is
 
 
 ### up/down script : reverse engineered from small c program
+
+
+## Test it
+
+Android or iPhone
 
 
 ## Making it a service

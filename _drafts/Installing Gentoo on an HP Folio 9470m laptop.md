@@ -341,6 +341,7 @@ rc-update add net.enp0s25 default
 
 ```
 echo "sys-firmware/iwl6005-ucode" >> /etc/portage/package.accept_keywords
+?? dispatch_conf
 emerge sys-firmware/iwl6005-ucode
 ```
 

@@ -304,7 +304,7 @@ While you are at it, modify your `/etc/hosts` to fill your host name:
 
 No, we will install and configure wpa_supplicant to enable wireless networking.
 
-- install wpa_supplicant by typing `emerge net-wireless/wpa_supplicant`
+- install wpa_supplicant (with some other wireless utilities) by typing `emerge net-wireless/wpa_supplicant net-wireless/wireless-tools net-wireless/iw`
 
 - as we did previously, edit the `/etc/wpa_supplicant/wpa_supplicant.conf` file
 

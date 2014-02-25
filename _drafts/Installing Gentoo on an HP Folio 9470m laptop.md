@@ -56,19 +56,6 @@ An `iwconfig` should show that you are connected to your SSID, and an `ifconfig`
 
 To verify that you really have Internet access, type `ping -c 3 www.google.com` to see the pings.
 
-/*
-# Prepare to ssh
-
-By booting on this LiveCD, you are logged in automatically as root, but with a scrambled and unknown password. You won't be able to ssh into this system without knowing your password.
-
-So, type `passwd` to change it to your liking.
-
-Now you can start the SSH daemon:
-
-	/etc/init.d/sshd start
-
-From now on, you'll be doing everything from an SSH session in an another PC
-*/
 
 # Partition the disk
 

@@ -390,3 +390,18 @@ umount -l /mnt/gentoo{/boot,/proc,/sys,}
 
 - and now, unplug your USB drive and type `reboot`
 
+
+# Deeply update your system
+
+Why would you need to update your system since you just installed it from a recent stage3?
+You would be surprised to see how many packages are outdated even after a fresh install.
+
+```
+emerge --update --deep --with-bdeps=y --newuse @world
+```
+
+Now that your system is updated, you can remove obsolete and unused packages
+
+```
+emerge --depclean
+```

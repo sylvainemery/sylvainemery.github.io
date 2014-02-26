@@ -406,3 +406,71 @@ Now that your system is updated, you can remove obsolete and unused packages
 ```
 emerge --depclean
 ```
+
+
+# Install X
+
+(re)Configure your kernel
+```
+genkernel all --menuconfig
+```
+
+Verify that evdev is activated
+```
+Device dDrivers --->
+	Input device support --->
+	<*> Event interface
+```
+
+Disable Framebuffer drivers
+```
+Device Drivers --->
+	Graphics support --->
+		-*- Support for frame buffer devices --->
+			## unset everything
+		Console display driver support --->
+			-*- Framebuffer Console support
+```
+
+Setup Intel video card
+```
+Device Drivers --->
+	Graphics support --->
+		<*> /dev/agpgart (AGP Support) --->
+			## unset everything other than:
+			<*> Intel 440LX/BX/GX, I8xx and E7x05 chipset support
+		<*> Direct Rendering Manager (XFree86 4.1.0 and higher DRI support) --->
+			<*> Intel 8xx/9xx/G3x/G4x/HD Graphics
+   			[*] Enable modesetting on intel by default
+```
+
+When you have finished the configuration, save it and exit menuconfig. genkernel will compile the new kernel and initramfs.
+
+Reboot when it's done.
+
+
+Install the drivers
+```
+emerge xorg-drivers --autounmask-write
+dispatch-conf
+emerge xorg-drivers
+```
+
+Install the X11 server
+
+```
+echo "x11-base/xorg-server udev" >> /etc/portage/package.use
+emerge xorg-server
+```
+
+Install i3
+
+```
+emerge x11-wm/i3
+```
+
+Install a terminal
+
+```
+emerge xterm
+```

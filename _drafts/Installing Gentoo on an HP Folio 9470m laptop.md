@@ -369,6 +369,13 @@ Just type `passwd`. This is the root password. You know what it means.
 - install some useful utils: `emerge gentoolkit portage-utils iproute2`
 
 
+# ACPI (power button, fans, battery...)
+
+Install the daemon:: `emerge acpid`
+Then start it: `/etc/init.d/acpid start`
+And add it at boot: `rc-update add acpid default`
+
+
 # Install a bootloader
 
 - install GRUB2: `emerge sys-boot/grub`

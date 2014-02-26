@@ -504,3 +504,25 @@ Install a terminal
 ```
 emerge xterm
 ```
+
+
+# video (webcam)
+
+In the kernel, choose v4l2 and usb cam /!\ need more explaination
+
+To test the webcam, use mplayer:
+```
+USE="v4l" emerge mplayer
+mplayer tv:// -tv driver=v4l2:device=/dev/video0
+```
+If you are in an X session, your video should show. Otherwise, you should see a frame counter rolling. That's good.
+
+
+# sound (alsa)
+
+instal alsa-utils
+```
+emerge alsa-utils
+```
+
+If you have no sound, launch `alsamixer` to unmute (type `m`)

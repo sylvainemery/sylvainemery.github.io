@@ -182,6 +182,10 @@ The portage profile aims to pre-fill USE flags. Since this is a laptop and you w
 First, type `eselect profile list` to see the list of available profiles.
 Then type `eselect profile set X` where X is the desktop profile.
 
+While you are at it, choose your Python version:
+First, type `eselect python list` to see the list of available python versions.
+Then type `eselect python set X` where X is the your prefered version.
+
 
 # make.conf
 
@@ -190,12 +194,12 @@ So here is the content of `/etc/portage/make.conf`:
 
 ```
 CHOST="x86_64-pc-linux-gnu"
-CFLAGS="-march=core-avx-i -O2 -pipe" # IvyBridge
+CFLAGS="-march=core-avx-i -O2 -pipe"
 CXXFLAGS="${CFLAGS}"
 
 MAKEOPTS="-j3" # 2 cores
 
-USE="bindist mmx sse sse2 -ipv6"
+USE="bindist mmx sse sse2 -ipv6 -kde -gnome xinerama"
 
 PORTDIR="/usr/portage"
 DISTDIR="${PORTDIR}/distfiles"
@@ -203,6 +207,9 @@ PKGDIR="${PORTDIR}/packages"
 
 VIDEO_CARDS="intel i965"
 INPUT_DEVICES="synaptics evdev"
+
+ACCEPT_KEYWORDS="~amd64" # yes, we will accept unstable packages! Crazy us!
+FEATURES="buildpkg" # keep a compiled version of packages for speedier further uses 
 
 EMERGE_DEFAULT_OPTS="--keep-going=y"
 ```
@@ -252,6 +259,14 @@ emerge --config sys-libs/timezone-data
 ```
 
 If you live somewhere else, check `/usr/share/zoneinfo` for a list of all the supported timezones.
+
+# First global update
+
+Because you changed your portage profile, it's good to launch a global update of the system. All "mandatory" packages will thus be installed.
+
+```
+emerge --update --deep --with-bdeps=y --newuse @world
+```
 
 
 # Build your kernel
@@ -373,6 +388,7 @@ Just type `passwd`. This is the root password. You know what it means.
 - `metalog` will be your system logger. To install it, type `emerge metalog && rc-update add metalog default`.
 - the cron daemon will be `cronie`. Type `emerge cronie && rc-update add cronie default`
 - to run SSH at boot: `rc-update add sshd default`
+- install a NTP daemon: `emerge ntp && /etc/init.d/ntpd start && rc-update add ntpd default`
 - install some useful utils: `emerge gentoolkit portage-utils iproute2`
 
 

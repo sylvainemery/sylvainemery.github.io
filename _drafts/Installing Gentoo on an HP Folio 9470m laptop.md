@@ -194,8 +194,8 @@ PORTDIR="/usr/portage"
 DISTDIR="${PORTDIR}/distfiles"
 PKGDIR="${PORTDIR}/packages"
 
-VIDEO_CARDS="intel"
-INPUT_DEVICES="synaptics evdev keyboard mouse"
+VIDEO_CARDS="intel i965"
+INPUT_DEVICES="synaptics evdev"
 
 EMERGE_DEFAULT_OPTS="--keep-going=y"
 ```

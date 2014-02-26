@@ -262,7 +262,7 @@ If you live somewhere else, check `/usr/share/zoneinfo` for a list of all the su
 
 # First global update
 
-Because you changed your portage profile, it's good to launch a global update of the system. All "mandatory" packages will thus be installed.
+Because you changed your portage profile and chose to enable unstable packages, it's good to launch a global update of the system. All "mandatory" packages will thus be installed.
 
 ```
 emerge --update --deep --with-bdeps=y --newuse @world
@@ -420,6 +420,14 @@ umount -l /mnt/gentoo{/boot,/proc,/sys,}
 ```
 
 - and now, unplug your USB drive and type `reboot`
+
+
+# Make portage compile in RAM
+
+Add the following line to your `/etc/portage/make.conf` file:
+```
+PORTAGE_TMPDIR="/dev/shm"
+```
 
 
 # Deeply update your system

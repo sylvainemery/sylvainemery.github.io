@@ -176,6 +176,13 @@ export PS1="(chroot) $PS1"
 *From now on, everything you do is in your final system, not on the LiveCD.*
 
 
+# Portage profile
+
+The portage profile aims to pre-fill USE flags. Since this is a laptop and you want some graphical UI, choose the desktop profile.
+First, type `eselect profile list` to see the list of available profiles.
+Then type `eselect profile set X` where X is the desktop profile.
+
+
 # make.conf
 
 The HP Folio 9470m has an Intel Core i7-3687U CPU. It's an IvyBridge and as of gcc-4.7, its `march` is `core-avx-i`.

@@ -392,11 +392,9 @@ rc-update add net.wlo1 default
 rc-update add net.enp0s25 default
 ```
 
-- for linux to be able to start the wireless interface, you need to install a microcode for it. This laptop needs the `sys-firmware/iwl6005-ucode` ebuild, but doing a straight emerge won't do because it is not considered as stable (as of the time of writing). So you need to add a line to `/etc/portage/package.accept_keywords` before the emerge
+- for linux to be able to start the wireless interface, you need to install a microcode for it. This laptop needs the `sys-firmware/iwl6005-ucode` ebuild
 
 ```
-echo "sys-firmware/iwl6005-ucode" >> /etc/portage/package.accept_keywords
-?? dispatch_conf
 emerge sys-firmware/iwl6005-ucode
 ```
 

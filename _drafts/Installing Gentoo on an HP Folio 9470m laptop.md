@@ -276,6 +276,10 @@ Because you changed your portage profile and chose to enable unstable packages, 
 emerge --update --deep --with-bdeps=y --newuse @world
 ```
 
+Following this big emerge, run:
+```
+rc-update add kmod-static-nodes sysinit
+```
 
 # Build your kernel
 

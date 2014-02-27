@@ -159,6 +159,7 @@ cp -L /etc/resolv.conf /mnt/gentoo/etc/
 - mount the filesystems
 
 ```
+mount -o remount,nodev,nosuid -t tmpfs shm /dev/shm # to remount shm so you can use it as a temp dir for portage
 mount -t proc proc /mnt/gentoo/proc
 mount --rbind /sys /mnt/gentoo/sys
 mount --rbind /dev /mnt/gentoo/dev
@@ -209,13 +210,15 @@ PORTDIR="/usr/portage"
 DISTDIR="${PORTDIR}/distfiles"
 PKGDIR="${PORTDIR}/packages"
 
+PORTAGE_TMPDIR="/dev/shm"
+
 VIDEO_CARDS="intel i965"
 INPUT_DEVICES="synaptics evdev"
 
 ACCEPT_KEYWORDS="~amd64" # yes, we will accept unstable packages! Crazy us!
 FEATURES="buildpkg" # keep a compiled version of packages for speedier further uses 
 
-EMERGE_DEFAULT_OPTS="--keep-going=y"
+EMERGE_DEFAULT_OPTS="--keep-going=y --quiet"
 ```
 
 If you need to know which CFLAGS you should use with a different processor, you can go to the [gentoo wiki](http://wiki.gentoo.org/wiki/Safe_CFLAGS).
@@ -264,6 +267,7 @@ emerge --config sys-libs/timezone-data
 
 If you live somewhere else, check `/usr/share/zoneinfo` for a list of all the supported timezones.
 
+
 # First global update
 
 Because you changed your portage profile and chose to enable unstable packages, it's good to launch a global update of the system. All "mandatory" packages will thus be installed.
@@ -298,7 +302,7 @@ zcat /proc/config.gz > /usr/share/genkernel/arch/x86_64/kernel-config
 genkernel all
 ```
 
-If all succeeds, you'll see 2 files in `/boot`: `kernel*` and `initramfs*`
+If all succeeds, you'll see these 2 files in `/boot`: `kernel*` and `initramfs*`
 
 
 # Configure the filesystem
@@ -424,14 +428,6 @@ umount -l /mnt/gentoo{/boot,/proc,/sys,}
 ```
 
 - and now, unplug your USB drive and type `reboot`
-
-
-# Make portage compile in RAM
-
-Add the following line to your `/etc/portage/make.conf` file:
-```
-PORTAGE_TMPDIR="/dev/shm"
-```
 
 
 # Deeply update your system

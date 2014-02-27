@@ -419,15 +419,9 @@ Just type `passwd`. This is the root password. You know what it means.
 - `metalog` will be your system logger. To install it, type `emerge metalog && rc-update add metalog default`.
 - the cron daemon will be `cronie`. Type `emerge cronie && rc-update add cronie default`
 - to run SSH at boot: `rc-update add sshd default`
-- install a NTP daemon: `emerge ntp && /etc/init.d/ntpd start && rc-update add ntpd default`
+- install a NTP daemon: `emerge ntp && rc-update add ntpd default`
 - install some useful utils: `emerge gentoolkit portage-utils iproute2`
-
-
-# ACPI (power button, fans, battery...)
-
-Install the daemon:: `emerge acpid`
-Then start it: `/etc/init.d/acpid start`
-And add it at boot: `rc-update add acpid default`
+- install ACPI (power button, fans, battery...): `emerge acpid && rc-update add acpid default`
 
 
 # Install a bootloader

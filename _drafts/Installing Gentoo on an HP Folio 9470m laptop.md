@@ -301,10 +301,11 @@ Because you changed your portage profile and chose to enable unstable packages, 
 emerge --update --deep --with-bdeps=y --newuse @world
 ```
 
-Following this big emerge, run:
+Following this big emerge, you'll probably have to run (check the end of the emerge log to see if other messages exist):
 ```
 rc-update add kmod-static-nodes sysinit
 ```
+
 
 # Build your kernel
 
@@ -316,7 +317,7 @@ This is what you'll choose here, and because the `genkernel` tool takes its conf
 - First, grab the kernel sources and the `genkernel` util
 
 ```
-emerge -q gentoo-sources genkernel
+emerge gentoo-sources genkernel
 ```
 
 - Then copy the config used during the LiveCD boot to the file used by `genkernel`
@@ -368,11 +369,6 @@ No, we will install and configure wpa_supplicant to enable wireless networking.
 - as we did previously, edit the `/etc/wpa_supplicant/wpa_supplicant.conf` file
 
 ```
-ctrl_interface=/var/run/wpa_supplicant
-ctrl_interface_group=0
-ap_scan=1
-
-# Simple case: WPA-PSK, PSK as an ASCII passphrase, allow all valid ciphers
 network={
   ssid="simple"
   psk="very secret passphrase"
@@ -404,7 +400,7 @@ echo "sys-firmware/iwl6005-ucode" >> /etc/portage/package.accept_keywords
 emerge sys-firmware/iwl6005-ucode
 ```
 
-- finally, don't forget to install a dhcp client by typing `emerge dhcpdc`
+- finally, don't forget to install a dhcp client by typing `emerge dhcpcd`
 
 
 # Configure keymap and hwclock

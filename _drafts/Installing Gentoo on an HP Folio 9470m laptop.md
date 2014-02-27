@@ -18,6 +18,15 @@ title: Installing Gentoo on an HP Folio 9470m laptop
 Tip: if the default was loaded before you could change it, and want to get (e.g.) the french layout, type `loadkeys fr` once you are in the shell.
 
 
+# Set the date
+
+Verify that your clock is correct by typing `date`.
+If not, you can change it via:
+```
+date MMJJhhmmAAAA
+````
+
+
 # Configure Wifi
 
 Note: only possible if wpa_supplicant is included in your gentoo LiveCD

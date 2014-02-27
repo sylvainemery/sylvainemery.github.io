@@ -39,11 +39,6 @@ It indicates that wpa_supplicant is installed and that we need to provide it wit
 Taking info from the [gentoo handbook](http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=4&chap=4), edit the following file `/etc/wpa_supplicant/wpa_supplicant.conf`:
 
 ```
-ctrl_interface=/var/run/wpa_supplicant
-ctrl_interface_group=0
-ap_scan=1
-
-# Simple case: WPA-PSK, PSK as an ASCII passphrase, allow all valid ciphers
 network={
   ssid="simple"
   psk="very secret passphrase"

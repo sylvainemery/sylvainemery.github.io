@@ -92,6 +92,31 @@ cfdisk /dev/sda
 - Write the partition table to disk
 - Quit
 
+Or with `parted -a optimal /dev/sda`:
+```
+(parted) mklabel msdos
+(parted) unit mib
+(parted) mkpart grub 1 3
+(parted) set 1 bios_grub on
+(parted) mkpart boot 3 515
+(parted) set 2 boot on
+(parted) mkpart swap 515 8707
+(parted) mkpart rootfs 8707 -1s
+(parted) print
+(parted) quit
+```
+
+Or with `gdisk /dev/sda`:
+- Delete all the existing partitions by typing `d`
+- Create the boot partition by typing `n`, part number by default (1), first sector by default (2048), last sector +512M, partition type by default (8300)
+- Create the swap partition by typing `n`, part number by default (2), first sector by default (1050624), last sector +8192M, partition type 8200
+- Create the root partition by typing `n`, part number by default (3), first sector by default (17827839), last sector by default (500118158), partition type by default (8300)
+- Rename the boot partition by typing `c`, part 1, name boot
+- Rename the swap partition by typing `c`, part 2, name swap
+- Rename the root partition by typing `c`, part 3, name root
+- Print the partition table to verify it by typinf `p`
+- Write the partition table and qui by typing `w`, answer Y at the warning
+
 
 # Init the partitions
 

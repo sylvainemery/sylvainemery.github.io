@@ -124,7 +124,7 @@ Tip: You can choose a [closer mirror](http://www.gentoo.org/main/en/mirrors2.xml
 ```
 cd /mnt/gentoo
 wget URL_of_your_stage3_file
-tar xvjpf stage3-*.tar.bz2
+tar xpf stage3-*.tar.bz2
 ```
 
 # Download portage
@@ -132,8 +132,8 @@ tar xvjpf stage3-*.tar.bz2
 The latest portage snapshot is found here: http://distfiles.gentoo.org/snapshots/portage-latest.tar.bz2
 
 ```
-wget http://distfiles.gentoo.org/snapshots/portage-latest.tar.bz2
-tar -xvjf portage-latest.tar.bz2 -C /mnt/gentoo/usr
+wget http://distfiles.gentoo.org/snapshots/portage-latest.tar.xz
+tar xf portage-latest.tar.xz -C /mnt/gentoo/usr
 ```
 
 

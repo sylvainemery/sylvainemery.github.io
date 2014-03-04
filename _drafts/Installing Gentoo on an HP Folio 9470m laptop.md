@@ -147,7 +147,7 @@ All set, you'll now start to configure your final gentoo system.
 
 # Download stage3
 
-You can get the current stage3 here: http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64/
+You can choose the current stage3 here: http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64/
 
 Note the URL for the `stage3-amd64-YYYMMDD.tar.bz2` file
 
@@ -161,14 +161,9 @@ wget URL_of_your_stage3_file
 tar xpf stage3-*.tar.bz2
 ```
 
-# Download portage
+# Install a portage snapshot
 
-The latest portage snapshot is found here: http://distfiles.gentoo.org/snapshots/portage-latest.tar.bz2
-
-```
-wget http://distfiles.gentoo.org/snapshots/portage-latest.tar.xz
-tar xf portage-latest.tar.xz -C /mnt/gentoo/usr
-```
+To download and install the latest portage snapshot, the easiest way is to use `emerge-webrsync`.
 
 
 # Prepare your gentoo system

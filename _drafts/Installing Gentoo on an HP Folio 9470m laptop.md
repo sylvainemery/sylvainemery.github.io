@@ -72,8 +72,8 @@ You will make a GPT disk here, and use the without-GUI-but-still-excellent `gdis
 
 To enter the partition utility, type `gdisk /dev/sda`. Then:
 
-- Print the existing partition table (if any) by typing `p`
-- Delete all the existing partitions. Type `d` and the partition number(s).
+- Print the existing partition table by typing `p`
+- Delete all the existing partitions (if any). Type `d` and the partition number.
 - Create the bios-boot partition by typing `n`, partition number by default (1), first sector by default (2048), last sector +2M, partition type ef02
 - Create the boot partition by typing `n`, partition number by default (2), first sector by default (6144), last sector +512M, partition type by default (8300)
 - Create the swap partition by typing `n`, partition number by default (3), first sector by default (1054720), last sector +8192M, partition type 8200
@@ -199,7 +199,7 @@ PKGDIR="${PORTDIR}/packages"
 
 PORTAGE_TMPDIR="/dev/shm"
 
-VIDEO_CARDS="intel i915"
+VIDEO_CARDS="intel i915" # despite being an IvyBridge, the video card is still an i915, not an i965
 INPUT_DEVICES="synaptics evdev"
 
 ACCEPT_KEYWORDS="~amd64" # yes, we will accept unstable packages! Crazy us!
@@ -226,7 +226,7 @@ fr_FR.UTF-8 UTF-8
 
 You then have to run `locale-gen` to generate all the specified locales.
 
-Finaly, edit your `/etc/env.d/02locale` file to match your preferences. Here is mine, all french, apart from messages:
+Finaly, edit your `/etc/env.d/02locale` file to match your preferences. Here is mine, mostly french, apart from messages:
 
 ```
 LANG="en_US.UTF-8"
@@ -271,17 +271,22 @@ emerge --update --deep --with-bdeps=y --newuse @world
 ```
 
 Following this big emerge, you'll probably have to run (check the end of the emerge log to see if other messages exist):
+
 ```
 rc-update add kmod-static-nodes sysinit
+```
+
+Now that your system is updated, you can remove obsolete and unused packages
+
+```
+emerge --depclean
 ```
 
 
 # Build your kernel
 
-*You know you want to! That's why Linux exists, after all!*
-
 There is a very involving process where you can choose every single piece of code that goes into your kernel, and there is a simple one, where you don't have to decide anything.
-This is what you'll choose here, and because the `genkernel` tool takes its config from what was detected at the LiveCD boot, your kernel will still be optimized for your laptop.
+This is what you'll choose here, and because the `genkernel` tool takes its config from what was detected at the LiveCD boot, your kernel will mostly be optimized for your laptop.
 
 - First, grab the kernel sources and the `genkernel` util
 
@@ -310,7 +315,7 @@ If all succeeds, you'll see these 2 files in `/boot`: `kernel*` and `initramfs*`
 
 # Configure the filesystem
 
-Your partitions ar listed in `/etc/fstab`. Gentoo provides a default file that is not valid and must be modified.
+Your partitions are listed in `/etc/fstab`. Gentoo provides a default file that is not valid and must be modified.
 Based on the partitions we made earlier, here is what it should look like:
 
 ```
@@ -391,8 +396,8 @@ Just type `passwd`. This is the root password. You know what it means.
 
 # Install some necessary system tools
 
-- `metalog` will be your system logger. To install it, type `emerge metalog && rc-update add metalog default`.
-- the cron daemon will be `cronie`. Type `emerge cronie && rc-update add cronie default`
+- metalog will be your system logger. To install it, type `emerge metalog && rc-update add metalog default`.
+- the cron daemon will be cronie. Type `emerge cronie && rc-update add cronie default`
 - install a NTP daemon: `emerge ntp && rc-update add ntpd default`
 - install ACPI (power button, fans, battery...): `emerge acpid && rc-update add acpid default`
 - install some useful utils: `emerge gentoolkit portage-utils iproute2`
@@ -403,7 +408,7 @@ Just type `passwd`. This is the root password. You know what it means.
 
 - install GRUB2: `emerge sys-boot/grub`
 - now install the necessary GRUB2 files in your boot disk: `grub2-install /dev/sda`
-- generate the GRUB2 configuration based on genkernel: `grub2-mkconfig -o /boot/grub/grub.cfg`
+- generate the GRUB2 configuration: `grub2-mkconfig -o /boot/grub/grub.cfg`
 
 # Reboot
 
@@ -447,7 +452,7 @@ genkernel all --menuconfig
 
 Verify that evdev is activated
 ```
-Device dDrivers --->
+Device Drivers --->
 	Input device support --->
 	<*> Event interface
 ```
@@ -506,13 +511,12 @@ emerge xterm
 ```
 
 
-# video (webcam)
+# Verify the webcam
 
 In the kernel, choose v4l2 and usb cam /!\ need more explaination
 
 To test the webcam, use mplayer:
 ```
-USE="v4l" emerge mplayer
 mplayer tv:// -tv driver=v4l2:device=/dev/video0
 ```
 If you are in an X session, your video should show. Otherwise, you should see a frame counter rolling. That's good.
@@ -522,7 +526,7 @@ If you are in an X session, your video should show. Otherwise, you should see a 
 
 instal alsa-utils
 ```
-emerge alsa-utils
+emerge alsa-utils && rc-update add alsasound default
 ```
 
 If you have no sound, launch `alsamixer` to unmute (type `m`)

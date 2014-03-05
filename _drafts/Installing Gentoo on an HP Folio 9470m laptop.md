@@ -68,54 +68,21 @@ To verify that you really have Internet access, type `ping -c 3 www.google.com` 
 
 # Partition the disk
 
-To enter the partition utility, type :
+You will make a GPT disk here, and use the without-GUI-but-still-excellent `gdisk` utility. It allows for automatic partition alignment.
 
-```
-cfdisk /dev/sda
-```
+To enter the partition utility, type `gdisk /dev/sda`. Then:
 
-- First, delete all existing partitions, should you have any.
-- Create the first partition, it will be named `/dev/sda1` and be used as the boot partition:
-	- Primary
-	- Size: 512 MB
-	- Add partition at beginning of free space
-	- Make this partition Bootable
-- Create the second partition, it will be named `/dev/sda2` and will be the swap:
-	- Primary
-	- Size: equal to the size of your RAM (e.g. 8192 MB)
-	- Add partition at beginning of free space
-	- Change the type to be `Linux swap / Solaris` (82)
-- Create the last partition, it will be named `/dev/sda3` and contain your system:
-	- Primary
-	- Size: the rest, let the default size cfdisk gives you
-	- Add partition at beginning of free space
-- Write the partition table to disk
-- Quit
-
-Or with `parted -a optimal /dev/sda`:
-```
-(parted) mklabel msdos
-(parted) unit mib
-(parted) mkpart grub 1 3
-(parted) set 1 bios_grub on
-(parted) mkpart boot 3 515
-(parted) set 2 boot on
-(parted) mkpart swap 515 8707
-(parted) mkpart rootfs 8707 -1s
-(parted) print
-(parted) quit
-```
-
-Or with `gdisk /dev/sda`:
-- Delete all the existing partitions by typing `d`
-- Create the boot partition by typing `n`, part number by default (1), first sector by default (2048), last sector +512M, partition type by default (8300)
-- Create the swap partition by typing `n`, part number by default (2), first sector by default (1050624), last sector +8192M, partition type 8200
-- Create the root partition by typing `n`, part number by default (3), first sector by default (17827839), last sector by default (500118158), partition type by default (8300)
-- Rename the boot partition by typing `c`, part 1, name boot
-- Rename the swap partition by typing `c`, part 2, name swap
-- Rename the root partition by typing `c`, part 3, name root
-- Print the partition table to verify it by typinf `p`
-- Write the partition table and qui by typing `w`, answer Y at the warning
+- Print the existing partition table (if any) by typing `p`
+- Delete all the existing partitions. Type `d` and the partition number(s).
+- Create the bios-boot partition by typing `n`, partition number by default (1), first sector by default (2048), last sector +2M, partition type ef02
+- Create the boot partition by typing `n`, partition number by default (2), first sector by default (6144), last sector +512M, partition type by default (8300)
+- Create the swap partition by typing `n`, partition number by default (3), first sector by default (1054720), last sector +8192M, partition type 8200
+- Create the root partition by typing `n`, partition number by default (4), first sector by default (17831936), last sector by default (500118158 *if you have a 256MB SSD*), partition type by default (8300)
+- Rename the boot partition by typing `c`, partition 2, name `boot`
+- Rename the swap partition by typing `c`, partition 3, name `swap`
+- Rename the root partition by typing `c`, partition 4, name `root`
+- Print the partition table to verify it by typing `p`
+- Write the partition table and quit by typing `w`, answer `y` at the warning
 
 
 # Init the partitions
@@ -123,23 +90,23 @@ Or with `gdisk /dev/sda`:
 - Format the partitions
 
 ```
-mkfs.ext2 /dev/sda1
-mkfs.ext4 /dev/sda3
+mkfs.ext2 /dev/sda2
+mkfs.ext4 /dev/sda4
 ```
 
 - Init and activate the swap
 
 ```
-mkswap /dev/sda2
-swapon /dev/sda2
+mkswap /dev/sda3
+swapon /dev/sda3
 ```
 
 - Now mount the partitions
 
 ```
-mount /dev/sda3 /mnt/gentoo
+mount /dev/sda4 /mnt/gentoo
 mkdir /mnt/gentoo/boot
-mount /dev/sda1 /mnt/gentoo/boot
+mount /dev/sda2 /mnt/gentoo/boot
 ```
 
 All set, you'll now start to configure your final gentoo system.
@@ -336,9 +303,9 @@ Your partitions ar listed in `/etc/fstab`. Gentoo provides a default file that i
 Based on the partitions we made earlier, here is what it should look like:
 
 ```
-/dev/sda1   /boot        ext2    defaults,noatime     0 2
-/dev/sda2   none         swap    sw                   0 0
-/dev/sda3   /            ext4    noatime,discard      0 1
+/dev/sda2   /boot        ext2    defaults,noatime     0 2
+/dev/sda3   none         swap    sw                   0 0
+/dev/sda4   /            ext4    noatime,discard      0 1
 
 shm         /dev/shm     tmpfs   nodev,nosuid         0 0
 ```

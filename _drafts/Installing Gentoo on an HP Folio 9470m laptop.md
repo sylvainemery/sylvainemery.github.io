@@ -191,7 +191,7 @@ CXXFLAGS="${CFLAGS}"
 
 MAKEOPTS="-j3" # 2 cores
 
-USE="bindist mmx sse sse2 -ipv6 -kde -gnome xinerama"
+USE="bindist mmx sse sse2 -ipv6 -kde -gnome xinerama v4l -llvm -llvm-shared-libs"
 
 PORTDIR="/usr/portage"
 DISTDIR="${PORTDIR}/distfiles"

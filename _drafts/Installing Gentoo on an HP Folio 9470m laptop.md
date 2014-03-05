@@ -199,7 +199,7 @@ PKGDIR="${PORTDIR}/packages"
 
 PORTAGE_TMPDIR="/dev/shm"
 
-VIDEO_CARDS="intel i965"
+VIDEO_CARDS="intel i915"
 INPUT_DEVICES="synaptics evdev"
 
 ACCEPT_KEYWORDS="~amd64" # yes, we will accept unstable packages! Crazy us!
@@ -229,7 +229,7 @@ You then have to run `locale-gen` to generate all the specified locales.
 Finaly, edit your `/etc/env.d/02locale` file to match your preferences. Here is mine, all french, apart from messages:
 
 ```
-LANG="fr_FR.UTF-8"
+LANG="en_US.UTF-8"
 LC_CTYPE="fr_FR.UTF-8"
 LC_NUMERIC="fr_FR.UTF-8"
 LC_TIME="fr_FR.UTF-8"
@@ -253,6 +253,13 @@ emerge --config sys-libs/timezone-data
 ```
 
 If you live somewhere else, check `/usr/share/zoneinfo` for a list of all the supported timezones.
+
+You should now reload your environment:
+
+```
+env-update && source /etc/profile
+export PS1="(chroot) $PS1"
+```
 
 
 # First global update
@@ -287,6 +294,10 @@ emerge gentoo-sources genkernel
 ```
 zcat /proc/config.gz > /usr/share/genkernel/arch/x86_64/kernel-config
 ```
+
+- Edit the `/etc/genkernel.conf` file:
+	- find `MAKEOPTS` and set it to `-j3`
+	- set the `TMPDIR` to `/dev/shm/tmp/genkernel`
 
 - You can now launch the kernel building
 
@@ -331,6 +342,8 @@ No, we will install and configure wpa_supplicant to enable wireless networking.
 - as we did previously, edit the `/etc/wpa_supplicant/wpa_supplicant.conf` file
 
 ```
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=wheel
+
 network={
   ssid="simple"
   psk="very secret passphrase"
@@ -380,10 +393,10 @@ Just type `passwd`. This is the root password. You know what it means.
 
 - `metalog` will be your system logger. To install it, type `emerge metalog && rc-update add metalog default`.
 - the cron daemon will be `cronie`. Type `emerge cronie && rc-update add cronie default`
-- to run SSH at boot: `rc-update add sshd default`
 - install a NTP daemon: `emerge ntp && rc-update add ntpd default`
-- install some useful utils: `emerge gentoolkit portage-utils iproute2`
 - install ACPI (power button, fans, battery...): `emerge acpid && rc-update add acpid default`
+- install some useful utils: `emerge gentoolkit portage-utils iproute2`
+- to run SSH at boot: `rc-update add sshd default`
 
 
 # Install a bootloader

@@ -470,22 +470,70 @@ When you have finished the configuration, save it and exit menuconfig. genkernel
 Reboot when it's done.
 */
 
-Install the X11 server
+- Install the X11 server
 
 ```
 emerge xorg-server
 ```
 
-Install i3
+You will now configure some settings, like the keyboard layout or the touchpad functions.
+
+First, if it does not exist already, create the `/etc/X11/xorg.conf.d` directory.
+
+If you don't want to use the default (us) keyboard layout, create the `/etc/X11/xorg.conf.d/10-keyboard.conf` file, containing the following:
 
 ```
-emerge x11-wm/i3
+Section "InputClass"
+	Identifier			"Internal Keyboard"
+	MatchIsKeyboard		"True"
+	Option "XkbLayout"	"fr" # or whaterver your layout is
+EndSection
 ```
 
-Install a terminal
+Now create the `/etc/X11/xorg.conf.d/50-synaptics.conf` file, containing:
 
 ```
-emerge xterm
+Section "InputClass"
+	Identifier				"Touchpad"
+	Driver					"synaptics"
+	MatchIsTouchpad			"True"
+	Option "VertEdgeScroll"	"off"
+	Option "TapButton1"		"1"
+	Option "TapButton2"		"2"
+	Option "TapButton3"		"3"
+	Option "VertTwoFingerScroll"	"1"
+	Option "HorizTwoFingerScroll"	"1"
+EndSection
+```
+
+You can find the list of available options in the `man synaptics` page.
+
+- Install a display manager: [SLiM](http://wiki.gentoo.org/wiki/SLiM)
+
+```
+emerge x11-misc/slim
+```
+
+Then set SLiM as your default display manager by setting `DISPLAYMANAGER="slim"` in `/etc/conf.d/xdm`
+
+You'll need to modify the `/etc/slim.conf` file to set the `login_cmd` to the line `login_cmd           exec /bin/bash -login ~/.xinitrc %session` and comment the 2 others.
+
+To start SLiM at boot, add xdm to your default runlevel: `rc-update add xdm default`
+
+Debug tip for later: if when you login with SLiM, it seems that [no Window Manager is loading](http://wiki.gentoo.org/wiki/SLiM#Failed_to_connect_to_socket_.2Fvar.2Frun.2Fdbus.2Fsystem_bus_socket:), type: `rc-update add dbus default`
+
+- Install [i3](http://i3wm.org/)
+
+```
+emerge x11-wm/i3 i3status
+```
+
+Then edit your `~/.xinitrc` to be just: `exec i3`
+
+- Install a terminal
+
+```
+emerge terminator
 ```
 
 

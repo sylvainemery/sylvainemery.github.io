@@ -68,7 +68,7 @@ To verify that you really have Internet access, type `ping -c 3 www.google.com` 
 
 # Partition the disk
 
-You will make a GPT disk here, and use the without-GUI-but-still-excellent `gdisk` utility. It allows for automatic partition alignment.
+You will make a GPT disk here, and use the without-GUI-but-still-excellent `gdisk` utility. It allows for automatic partition alignment. (see more [tips for maximizing SSD performance](https://wiki.archlinux.org/index.php/Solid_State_Drives#Tips_for_Maximizing_SSD_Performance))
 
 To enter the partition utility, type `gdisk /dev/sda`. Then:
 
@@ -201,6 +201,7 @@ PORTAGE_TMPDIR="/dev/shm"
 
 VIDEO_CARDS="intel i915" # despite being an IvyBridge, the video card is still an i915, not an i965
 INPUT_DEVICES="synaptics evdev"
+ALSA_CARDS="hda_intel"
 
 ACCEPT_KEYWORDS="~amd64" # yes, we will accept unstable packages! Crazy us!
 FEATURES="buildpkg" # keep a compiled version of packages for speedier further uses 
@@ -399,8 +400,9 @@ Just type `passwd`. This is the root password. You know what it means.
 - metalog will be your system logger. To install it, type `emerge metalog && rc-update add metalog default`.
 - the cron daemon will be cronie. Type `emerge cronie && rc-update add cronie default`
 - install a NTP daemon: `emerge ntp && rc-update add ntpd default`
-- install ACPI (power button, fans, battery...): `emerge acpid && rc-update add acpid default`
+- install [ACPI](http://wiki.gentoo.org/wiki/ACPI) (power button, fans, battery...): `emerge acpid && rc-update add acpid default`
 - install some useful utils: `emerge gentoolkit portage-utils iproute2`
+- want to use your mouse in the console? Install [gpm](https://wiki.gentoo.org/wiki/GPM) : `emerge gpm && rc-update add gpm default`
 - to run SSH at boot: `rc-update add sshd default`
 
 
@@ -427,24 +429,8 @@ umount -l /mnt/gentoo{/boot,/proc,/sys,}
 - and now, unplug your USB drive and type `reboot`
 
 
-# Deeply update your system
-
-Why would you need to update your system since you just installed it from a recent stage3?
-You would be surprised to see how many packages are outdated even after a fresh install.
-
-```
-emerge --update --deep --with-bdeps=y --newuse @world
-```
-
-Now that your system is updated, you can remove obsolete and unused packages
-
-```
-emerge --depclean
-```
-
-
 # Install X
-
+/*
 (re)Configure your kernel
 ```
 genkernel all --menuconfig
@@ -482,19 +468,11 @@ Device Drivers --->
 When you have finished the configuration, save it and exit menuconfig. genkernel will compile the new kernel and initramfs.
 
 Reboot when it's done.
-
-
-Install the drivers
-```
-emerge xorg-drivers --autounmask-write
-dispatch-conf
-emerge xorg-drivers
-```
+*/
 
 Install the X11 server
 
 ```
-echo "x11-base/xorg-server udev" >> /etc/portage/package.use
 emerge xorg-server
 ```
 
@@ -516,17 +494,20 @@ emerge xterm
 In the kernel, choose v4l2 and usb cam /!\ need more explaination
 
 To test the webcam, use mplayer:
+
 ```
 mplayer tv:// -tv driver=v4l2:device=/dev/video0
 ```
+
 If you are in an X session, your video should show. Otherwise, you should see a frame counter rolling. That's good.
 
 
-# sound (alsa)
+# Get sound
 
-instal alsa-utils
+Install alsa-utils
+
 ```
 emerge alsa-utils && rc-update add alsasound default
 ```
 
-If you have no sound, launch `alsamixer` to unmute (type `m`)
+If you get no sound, launch `alsamixer` to unmute (type `m`)

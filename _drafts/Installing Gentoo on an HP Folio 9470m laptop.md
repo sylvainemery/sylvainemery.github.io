@@ -3,15 +3,20 @@ layout: post
 title: Installing Gentoo on an HP Folio 9470m laptop
 ---
 
+This post is the instructions list I followed to install Gentoo on my new work laptop: an HP Folio 9470m. It's a mix of the official [Installing Gentoo handbook](https://www.gentoo.org/doc/en/handbook/handbook-amd64.xml?part=1), the [@ultrabug](http://www.ultrabug.fr/) [french install guide](http://www.ultrabug.fr/wiki/index.php5?title=Installer_Gentoo_Linux_simplement) and various resources I found while googling for this specific laptop.
+
+This is mostly intended to be a reminder to future-me, but I'd be delighted if it's useful to someone else. If so, let me know by writing a comment!
+
+
 # Prepare the USB drive
 
 - get the latest minimal install CD ISO from http://distfiles.gentoo.org/releases/amd64/autobuilds/current-iso/
-- put it on an usb drive with the help of [UNetbootin](http://unetbootin.sourceforge.net/)
+- put it on an USB drive with the help of [UNetbootin](http://unetbootin.sourceforge.net/)
 
 
 # Boot on the LiveCD *well, Live USB drive*
 
-- boot on the USB drive (don't forget to strike Esc at BIOS and then F9 to choose our boot medium)
+- boot on the USB drive
 - UNetbootin has a loader that allows you to choose what to boot, choose `gentoo`
 - you briefly have the option to change your keyboard layout, type the number associated with the layout of your laptop before the default one (US) is loaded
 
@@ -45,7 +50,7 @@ Failed to read or parse configuration '/etc/wpa_supplicant/wpa_supplicant.conf'.
 ```
 It indicates that wpa_supplicant is installed and that we need to provide it with a valid config file.
 
-Taking info from the [gentoo handbook](http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=4&chap=4), edit the following file `/etc/wpa_supplicant/wpa_supplicant.conf`:
+Taking info from the [Gentoo handbook](http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=4&chap=4), edit the following file `/etc/wpa_supplicant/wpa_supplicant.conf`:
 
 ```
 network={
@@ -68,7 +73,7 @@ To verify that you really have Internet access, type `ping -c 3 www.google.com` 
 
 # Partition the disk
 
-You will make a GPT disk here, and use the without-GUI-but-still-excellent `gdisk` utility. It allows for automatic partition alignment. (see more [tips for maximizing SSD performance](https://wiki.archlinux.org/index.php/Solid_State_Drives#Tips_for_Maximizing_SSD_Performance))
+You will make a GPT disk here, and use the without-GUI-but-still-excellent gdisk utility. It allows for automatic partition alignment. (see more [tips for maximizing SSD performance](https://wiki.archlinux.org/index.php/Solid_State_Drives#Tips_for_Maximizing_SSD_Performance))
 
 To enter the partition utility, type `gdisk /dev/sda`. Then:
 
@@ -181,7 +186,7 @@ Then type `eselect python set X` where X is the your prefered version.
 
 # make.conf
 
-The HP Folio 9470m has an Intel Core i7-3687U CPU. It's an IvyBridge and as of gcc-4.7, its `march` is `core-avx-i`.
+My laptop has an Intel Core i7-3687U CPU. It's an IvyBridge and as of gcc-4.7, its `march` is `core-avx-i`.
 So here is the content of `/etc/portage/make.conf`:
 
 ```
@@ -341,11 +346,11 @@ While you are at it, modify your `/etc/hosts` to fill your host name:
 127.0.0.1    *your_host_name* localhost
 ```
 
-No, we will install and configure wpa_supplicant to enable wireless networking.
+Now, we will install and configure wpa_supplicant to enable wireless networking.
 
 - install wpa_supplicant (with some other wireless utilities) by typing `emerge net-wireless/wpa_supplicant net-wireless/wireless-tools net-wireless/iw`
 
-- as we did previously, edit the `/etc/wpa_supplicant/wpa_supplicant.conf` file
+- as we did previously, edit the `/etc/wpa_supplicant/wpa_supplicant.conf` file:
 
 ```
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=wheel
@@ -356,14 +361,14 @@ network={
 }
 ```
 
-- now edit the `/etc/conf.d/net` file
+- now edit the `/etc/conf.d/net` file:
 
 ```
 config_wlo1="dhcp" # wireless interface for this particular laptop
 config_enp0s25="dhcp" # lan interface for this particular laptop
 ```
 
-- and to automatically start networking at boot, type the following commands
+- and to automatically start networking at boot, type the following commands:
 
 ```
 cd /etc/init.d
@@ -373,7 +378,7 @@ rc-update add net.wlo1 default
 rc-update add net.enp0s25 default
 ```
 
-- for linux to be able to start the wireless interface, you need to install a microcode for it. This laptop needs the `sys-firmware/iwl6005-ucode` ebuild
+- for linux to be able to start the wireless interface, you need to install a microcode for it. This laptop needs the `sys-firmware/iwl6005-ucode` ebuild:
 
 ```
 emerge sys-firmware/iwl6005-ucode
@@ -429,9 +434,12 @@ umount -l /mnt/gentoo{/boot,/proc,/sys,}
 - and now, unplug your USB drive and type `reboot`
 
 
+You now have a working Gentoo distribution installed on your laptop. It's time to configure it further.
+
+
 # Install X
 
-- Install the X11 server
+- Install the X11 server:
 
 ```
 emerge xorg-server
@@ -447,11 +455,11 @@ If you don't want to use the default (us) keyboard layout, create the `/etc/X11/
 Section "InputClass"
 	Identifier			"Internal Keyboard"
 	MatchIsKeyboard		"True"
-	Option "XkbLayout"	"fr" # or whaterver your layout is
+	Option "XkbLayout"	"fr" # or whatever your layout is
 EndSection
 ```
 
-Now create the `/etc/X11/xorg.conf.d/50-synaptics.conf` file, containing:
+This laptop has a synaptics touchpad, so create the `/etc/X11/xorg.conf.d/50-synaptics.conf` file, containing:
 
 ```
 Section "InputClass"
@@ -500,7 +508,7 @@ emerge terminator
 
 # Verify the webcam
 
-To test the webcam, use mplayer:
+To test the webcam, use mplayer (emerge it before):
 
 ```
 mplayer tv:// -tv driver=v4l2:device=/dev/video0
@@ -518,3 +526,8 @@ emerge alsa-utils && rc-update add alsasound default
 ```
 
 If you get no sound, launch `alsamixer` to unmute (type `m`)
+
+
+# That's it... for now!
+
+Everything should mostly work now. Of course, there is still some fiddling left! Linux is a living system, and part of its beauty resides in the ability to configure it the way you want.

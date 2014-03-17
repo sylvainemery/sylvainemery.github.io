@@ -3,9 +3,9 @@ layout: post
 title: Installing Gentoo on an HP Folio 9470m laptop
 ---
 
-This post is the instructions list I followed to install Gentoo on my new work laptop: an HP Folio 9470m. It's a mix of the official [Installing Gentoo handbook](https://www.gentoo.org/doc/en/handbook/handbook-amd64.xml?part=1), the [@ultrabug](http://www.ultrabug.fr/) [french install guide](http://www.ultrabug.fr/wiki/index.php5?title=Installer_Gentoo_Linux_simplement) and various resources I found while googling for this specific laptop.
+This post is the instructions list I followed to install Gentoo on my new work laptop: an HP Folio 9470m. It's a mix of the official [Installing Gentoo handbook](https://www.gentoo.org/doc/en/handbook/handbook-amd64.xml?part=1), [@ultrabug](http://www.ultrabug.fr/)'s [french install guide](http://www.ultrabug.fr/wiki/index.php5?title=Installer_Gentoo_Linux_simplement) and various resources I found while googling for this specific laptop.
 
-This is mostly intended to be a reminder to future-me, but I'd be delighted if it's useful to someone else. If so, let me know by writing a comment!
+This is mostly intended to be a reminder to future-me, but I'd be more than happy if it's useful to someone else. If so, let me know by writing a comment!
 
 
 # Prepare the USB drive
@@ -14,7 +14,7 @@ This is mostly intended to be a reminder to future-me, but I'd be delighted if i
 - put it on an USB drive with the help of [UNetbootin](http://unetbootin.sourceforge.net/)
 
 
-# Boot on the LiveCD *well, Live USB drive*
+# Boot on the LiveCD *(well, LiveUSB drive)*
 
 - boot on the USB drive
 - UNetbootin has a loader that allows you to choose what to boot, choose `gentoo`
@@ -26,7 +26,9 @@ Tip: if the default was loaded before you could change it, and want to get (e.g.
 # Set the date
 
 Verify that your clock is correct by typing `date`.
+
 If not, you can change it via:
+
 ```
 date MMJJhhmmAAAA
 ````
@@ -34,9 +36,7 @@ date MMJJhhmmAAAA
 
 # Configure Wifi
 
-Note: only possible if wpa_supplicant is included in your gentoo LiveCD
-
-To verify that you have wpa_supplicant, type `/etc/init.d/wpa_supplicant start`
+To verify that wpa_supplicant is available on your LiveCD, type `/etc/init.d/wpa_supplicant start`
 
 If you get this kind of error:
 ```
@@ -48,7 +48,7 @@ Failed to read or parse configuration '/etc/wpa_supplicant/wpa_supplicant.conf'.
  * Failed to start wpa_supplicant
  * ERROR: wpa_supplicant failed to start
 ```
-It indicates that wpa_supplicant is installed and that we need to provide it with a valid config file.
+It indicates that wpa_supplicant is installed and that you need to provide it with a valid config file.
 
 Taking info from the [Gentoo handbook](http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=4&chap=4), edit the following file `/etc/wpa_supplicant/wpa_supplicant.conf`:
 
@@ -114,7 +114,7 @@ mkdir /mnt/gentoo/boot
 mount /dev/sda2 /mnt/gentoo/boot
 ```
 
-All set, you'll now start to configure your final gentoo system.
+All set, you'll now start to configure your final Gentoo system.
 
 
 # Download stage3
@@ -138,7 +138,7 @@ tar xpf stage3-*.tar.bz2
 To download and install the latest portage snapshot, the easiest way is to use `emerge-webrsync`.
 
 
-# Prepare your gentoo system
+# Prepare your Gentoo system
 
 Before you chroot to your system, you need to prepare it first:
 
@@ -176,17 +176,22 @@ export PS1="(chroot) $PS1"
 # Portage profile
 
 The portage profile aims to pre-fill USE flags. Since this is a laptop and you want some graphical UI, choose the desktop profile.
+
 First, type `eselect profile list` to see the list of available profiles.
+
 Then type `eselect profile set X` where X is the desktop profile.
 
 While you are at it, choose your Python version:
+
 First, type `eselect python list` to see the list of available python versions.
+
 Then type `eselect python set X` where X is the your prefered version.
 
 
 # make.conf
 
-My laptop has an Intel Core i7-3687U CPU. It's an IvyBridge and as of gcc-4.7, its `march` is `core-avx-i`.
+This laptop has an Intel Core i7-3687U CPU. It's an IvyBridge and as of gcc-4.7, its `march` is `core-avx-i`.
+
 So here is the content of `/etc/portage/make.conf`:
 
 ```
@@ -214,12 +219,13 @@ FEATURES="buildpkg" # keep a compiled version of packages for speedier further u
 EMERGE_DEFAULT_OPTS="--keep-going=y --quiet"
 ```
 
-If you need to know which CFLAGS you should use with a different processor, you can go to the [gentoo wiki](http://wiki.gentoo.org/wiki/Safe_CFLAGS).
+If you need to know which CFLAGS you should use with a different processor, you can go to the [Gentoo wiki](http://wiki.gentoo.org/wiki/Safe_CFLAGS).
 
 
 # Locales
 
 You need to specify which locales you want on your system.
+
 Here is the content of `/etc/locale.gen` enabling the use of US english and french locales:
 
 ```
@@ -292,6 +298,7 @@ emerge --depclean
 # Build your kernel
 
 There is a very involving process where you can choose every single piece of code that goes into your kernel, and there is a simple one, where you don't have to decide anything.
+
 This is what you'll choose here, and because the `genkernel` tool takes its config from what was detected at the LiveCD boot, your kernel will mostly be optimized for your laptop.
 
 - First, grab the kernel sources and the `genkernel` util
@@ -322,7 +329,8 @@ If all succeeds, you'll see these 2 files in `/boot`: `kernel*` and `initramfs*`
 # Configure the filesystem
 
 Your partitions are listed in `/etc/fstab`. Gentoo provides a default file that is not valid and must be modified.
-Based on the partitions we made earlier, here is what it should look like:
+
+Based on the partitions you made earlier, here is what it should look like:
 
 ```
 /dev/sda2   /boot        ext2    defaults,noatime     0 2
@@ -333,6 +341,7 @@ shm         /dev/shm     tmpfs   nodev,nosuid         0 0
 ```
 
 Note the `discard` option for our root partition: since it's on an SSD and the fs is ext4, this will enable the TRIM command.
+
 Also: there is no cdrom drive on this laptop, so no need to write an entry in the fstab.
 
 
@@ -346,11 +355,11 @@ While you are at it, modify your `/etc/hosts` to fill your host name:
 127.0.0.1    *your_host_name* localhost
 ```
 
-Now, we will install and configure wpa_supplicant to enable wireless networking.
+Now, you will install and configure wpa_supplicant to enable wireless networking.
 
 - install wpa_supplicant (with some other wireless utilities) by typing `emerge net-wireless/wpa_supplicant net-wireless/wireless-tools net-wireless/iw`
 
-- as we did previously, edit the `/etc/wpa_supplicant/wpa_supplicant.conf` file:
+- as you did previously, edit the `/etc/wpa_supplicant/wpa_supplicant.conf` file:
 
 ```
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=wheel
@@ -364,8 +373,8 @@ network={
 - now edit the `/etc/conf.d/net` file:
 
 ```
-config_wlo1="dhcp" # wireless interface for this particular laptop
-config_enp0s25="dhcp" # lan interface for this particular laptop
+config_wlo1="dhcp" # wireless interface for this particular laptop. Run ifconfig to see yours.
+config_enp0s25="dhcp" # lan interface for this particular laptop. Run ifconfig to see yours.
 ```
 
 - and to automatically start networking at boot, type the following commands:
@@ -449,11 +458,11 @@ You will now configure some settings, like the keyboard layout or the touchpad f
 
 First, if it does not exist already, create the `/etc/X11/xorg.conf.d` directory.
 
-If you don't want to use the default (us) keyboard layout, create the `/etc/X11/xorg.conf.d/10-keyboard.conf` file, containing the following:
+If you don't want to use the default (US) keyboard layout, create the `/etc/X11/xorg.conf.d/10-keyboard.conf` file, containing the following:
 
 ```
 Section "InputClass"
-	Identifier			"Internal Keyboard"
+	Identifier		"Internal Keyboard"
 	MatchIsKeyboard		"True"
 	Option "XkbLayout"	"fr" # or whatever your layout is
 EndSection
@@ -525,9 +534,11 @@ Install alsa-utils
 emerge alsa-utils && rc-update add alsasound default
 ```
 
-If you get no sound, launch `alsamixer` to unmute (type `m`)
+If you don't get any sound, launch `alsamixer` to unmute (type `m`)
 
 
 # That's it... for now!
 
-Everything should mostly work now. Of course, there is still some fiddling left! Linux is a living system, and part of its beauty resides in the ability to configure it the way you want.
+Everything should work now - mostly. Of course, there is still some tweaking left!
+
+In an upcoming post, I'll detail the exact config files I used for this hardware, including for the kernel.

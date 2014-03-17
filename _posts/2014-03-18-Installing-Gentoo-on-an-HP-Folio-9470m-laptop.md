@@ -45,7 +45,7 @@ date MMJJhhmmAAAA
 
 To verify that wpa\_supplicant is available on your LiveCD, type `/etc/init.d/wpa_supplicant start`
 
-If you get this kind of error:
+You should get this kind of error:
 
 ```
  * Starting WPA Supplicant Daemon

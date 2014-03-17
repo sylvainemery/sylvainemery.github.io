@@ -35,3 +35,19 @@ Device Drivers --->
 In the kernel, choose v4l2 and usb cam /!\ need more explaination
 
 
+# make.conf
+
+The HP Folio 9470m has an Intel Core i7-3687U CPU. It's an IvyBridge and as of gcc-4.7, its `march` is `core-avx-i`.
+Modify the following info in `/etc/portage/make.conf`:
+
+```
+CHOST="x86_64-pc-linux-gnu"
+CFLAGS="-march=core-avx-i -O2 -pipe"
+CXXFLAGS="${CFLAGS}"
+
+MAKEOPTS="-j3" # 2 cores
+
+VIDEO_CARDS="intel i915" # despite being an IvyBridge, the video card is still an i915, not an i965
+INPUT_DEVICES="synaptics evdev"
+ALSA_CARDS="hda_intel"
+```

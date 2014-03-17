@@ -15,7 +15,7 @@ by writing a comment!
 
 # Prepare the USB drive
 
-- get the latest minimal install CD ISO from http://distfiles.gentoo.org/releases/amd64/autobuilds/current-iso/
+- get the latest minimal install CD ISO from [http://distfiles.gentoo.org/releases/amd64/autobuilds/current-iso/](http://distfiles.gentoo.org/releases/amd64/autobuilds/current-iso/)
 - put it on an USB drive with the help of [UNetbootin](http://unetbootin.sourceforge.net/)
 
 
@@ -43,9 +43,10 @@ date MMJJhhmmAAAA
 
 # Configure Wifi
 
-To verify that wpa_supplicant is available on your LiveCD, type `/etc/init.d/wpa_supplicant start`
+To verify that wpa\_supplicant is available on your LiveCD, type `/etc/init.d/wpa_supplicant start`
 
 If you get this kind of error:
+
 ```
  * Starting WPA Supplicant Daemon
 Successfully initialized wpa_supplicant
@@ -55,7 +56,7 @@ Failed to read or parse configuration '/etc/wpa_supplicant/wpa_supplicant.conf'.
  * Failed to start wpa_supplicant
  * ERROR: wpa_supplicant failed to start
 ```
-It indicates that wpa_supplicant is installed and that you need to provide it with a valid config file.
+It indicates that wpa\_supplicant is installed and that you need to provide it with a valid config file.
 
 Taking info from the [Gentoo handbook](http://www.gentoo.org/doc/en/handbook/handbook-x86.xml?part=4&chap=4), edit the following 
 file `/etc/wpa_supplicant/wpa_supplicant.conf`:
@@ -133,7 +134,7 @@ All set, you'll now start to configure your final Gentoo system.
 
 # Download stage3
 
-You can choose the current stage3 here: http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64/
+You can choose the current stage3 here: [http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64/](http://distfiles.gentoo.org/releases/amd64/autobuilds/current-stage3-amd64/)
 
 Note the URL for the `stage3-amd64-YYYMMDD.tar.bz2` file
 
@@ -373,9 +374,9 @@ While you are at it, modify your `/etc/hosts` to fill your host name:
 127.0.0.1    *your_host_name* localhost
 ```
 
-Now, you will install and configure wpa_supplicant to enable wireless networking.
+Now, you will install and configure wpa\_supplicant to enable wireless networking.
 
-- install wpa_supplicant (with some other wireless utilities) by typing `emerge net-wireless/wpa_supplicant 
+- install wpa\_supplicant (with some other wireless utilities) by typing `emerge net-wireless/wpa_supplicant 
 net-wireless/wireless-tools net-wireless/iw`
 
 - as you did previously, edit the `/etc/wpa_supplicant/wpa_supplicant.conf` file:
@@ -392,8 +393,8 @@ network={
 - now edit the `/etc/conf.d/net` file:
 
 ```
-config_wlo1="dhcp" # wireless interface for this particular laptop. Run ifconfig to see yours.
-config_enp0s25="dhcp" # lan interface for this particular laptop. Run ifconfig to see yours.
+config_wlo1="dhcp" # wireless interface for this laptop. Run ifconfig to see yours.
+config_enp0s25="dhcp" # lan interface for this laptop. Run ifconfig to see yours.
 ```
 
 - and to automatically start networking at boot, type the following commands:

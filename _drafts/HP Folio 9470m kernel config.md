@@ -27,6 +27,7 @@ Device Drivers --->
 		<*> Direct Rendering Manager (XFree86 4.1.0 and higher DRI support) --->
 			<*> Intel 8xx/9xx/G3x/G4x/HD Graphics
    			[*] Enable modesetting on intel by default
+   			[*] Enable legacy fbdev support for the modesettting intel driver
 ```
 
 

@@ -8,7 +8,7 @@ title: About
 <div class="vcard">
 Hi, I am <span class="fn"><span class="given-name">Sylvain</span> <span class="family-name">Emery</span></span>.
 <br />
-Find me on <a class="url" href="https://plus.google.com/+SylvainEmery">Google+</a> or on <a href="https://github.com/sylvainemery/">GitHub</a>.
+Find me on <a class="url" rel="me" href="https://plus.google.com/+SylvainEmery">Google+</a> or on <a rel="me" href="https://github.com/sylvainemery/">GitHub</a>.
 </div>
 
 ## About this site

@@ -1,5 +1,7 @@
 Google I/O 14 recap
 
+tl;dr: New Design, Android everywhere, Wear smartwatches available
+
 Material Design : for everything, from web to mobile
 http://googledevelopers.blogspot.com/2014/06/this-is-material-design.html
 	polymer
@@ -17,9 +19,11 @@ Android L
 	lockscreen notifications
 	popup notifications (yuk)
 	recent apps
+	unlock if authorized wear is near
+	Developer preview available http://developer.android.com/preview/setup-sdk.html
 
 Android Wear
-	hardware: 2 watches, Moto to follow this summer
+	hardware: 2 watches available now, Moto 360 to follow this summer
 	card-based
 	notifications (glass will support these)
 
@@ -32,7 +36,9 @@ Android TV
 	Brings chromecast functionnality (Google cast) to set-top boxes or smart TVs
 	Google Cast: mirror your android screen to your tv
 
-some android apps are "ported" to chromebooks
+ChromeOS
+	some android apps are "ported" to chromebooks
+	better integration with phone: calls, text messages, notifications. Unlock chromebook when your phone is near
 
 Chromecast
 	Cast without being on the same wifi (via ultrasonic sounds http://gigaom.com/2014/06/26/chromecast-will-use-ultrasonic-sounds-to-pair-your-tv-with-your-friends-phones/)
@@ -58,6 +64,7 @@ Google fit
 
 
 Google now can switch between languages automatically
+"OK google" works from any screen (http://www.droid-life.com/2014/06/25/google-search-3-5-14-adds-ok-google-hotword-everywhere-plus-audio-history/)
 
 Didn't announce
 http://readwrite.com/2014/06/25/google-io-2014-what-we-didnt-get

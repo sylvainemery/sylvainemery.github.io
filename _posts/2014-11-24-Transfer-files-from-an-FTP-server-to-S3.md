@@ -12,7 +12,7 @@ In order to choose the right tools to transfer the files from the old cache serv
 
 - The old cache server could only be accessed via FTP.
 - We needed to be able to mirror the source to the destination. Because our staff and apps would continue to use the old cache server while we would be ramping up on S3, we didn't want to retransfer all the files every day.
-- Some of our directories contained several hundreds of thousands files. We needed a tool that can list these directories without crashing.
+- Some of our directories contained several hundreds of thousands files. We needed a tool that could list these directories without crashing.
 - We had approximately 90 GB in 3,3 million files to transfer. Taking days to transfer everything was not an option.
 
 
@@ -29,7 +29,7 @@ Mirror the FTP locally
 I used the versatile and robust [lftp](http://lftp.yar.ru/):
 
 - It can transfer files in parallel, making it really fast.
-- It can use several alternative methods to list directories, including one that can handle the very large ones without timing out or crashing.
+- It can use several alternative methods to list directories, including one that can handle the very large directories without timing out or crashing.
 - The mirror command works flawlessly, I tested it with several combinations of new/updated/deleted files.
 - It keeps the original file timestamps.
 
@@ -81,7 +81,7 @@ Then I launch s3-parallel-put:
 - forcing the use of the HTTPS API
 - forcing the update method for each file
 - spawning 30 threads to go faster
-- using the `content-type=guess` option: it allows s3-parallel-put to specify the file type while uploading (it can only detect pictures, but that's what I was uploading). It's important because otherwise AWS doesn't send the right HTTP header to the browser, and a picture is downloaded instead of being shown in the browser.
+- using the `content-type=guess` option: it allows s3-parallel-put to specify the file type while uploading (it can only detect pictures, but that's what I was uploading). It's important because otherwise AWS doesn't send the right HTTP header to the browser, and when accessed directly a picture is downloaded instead of being shown in the browser.
 
 The EC2 instance being in the same region of my S3 bucket, the initial upload was blazing fast and took only 1.5 hours.
 
@@ -103,6 +103,6 @@ It would be interesting to know:
 - is the script launched for each changed file or more globally at the end of the mirror?
 - what parameters are passed to the shell script?
 
-By quickly browsing the [lftp source code](https://github.com/lavv17/lftp), it seems that the script is launched at the end of the mirror. In my case, it would have been more interesting if it were launched for every file: I could have used an S3 file uploader to upload each new/modified file individually.
+By quickly browsing the [lftp source code](https://github.com/lavv17/lftp), it seems that the script is launched at the end of the mirror. In my case, it would have been more interesting if it were launched for each modified file: I could have used an S3 file uploader to upload each new/modified file individually.
 
 Maybe in a future version, or *&mdash; if I dare dive into C++ again &mdash;* in a pull-request! :smile:
